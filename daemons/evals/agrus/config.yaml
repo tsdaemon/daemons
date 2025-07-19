@@ -1,0 +1,18 @@
+cases:
+  - name: "no_issues"
+    inputs:
+      logs: |
+        ["1752915537331309000","Starting nut-driver@myups.service - Network UPS Tools - device driver for NUT device 'myups'..."],["1752915537317512000","nut-driver@myups.service: Scheduled restart job, restart counter is at 6383."],["1752915522138331000","Starting nut-driver@myups.service - Network UPS Tools - device driver for NUT device 'myups'..."],["1752915522129880000","nut-driver@myups.service: Scheduled restart job, restart counter is at 6382."],["1752915506977256000","Starting nut-driver@myups.service - Network UPS Tools - device driver for NUT device 'myups'..."],["1752915506964062000","nut-driver@myups.service: Scheduled restart job, restart counter is at 6381."],["1752915491826282000","Starting nut-driver@myups.service - Network UPS Tools - device driver for NUT device 'myups'..."],["1752915491817221000","nut-driver@myups.service: Scheduled restart job, restart counter is at 6380."],["1752915476581264000","Starting nut-driver@myups.service - Network UPS Tools - device driver for NUT device 'myups'..."],["1752915476567660000","nut-driver@myups.service: Scheduled restart job, restart counter is at 6379."],["1752915461331348000","Starting nut-driver@myups.service - Network UPS Tools - device driver for NUT device 'myups'..."],
+    expected_steps:
+      - agent: "log_analyzer"
+        observations: "No issues found in the logs."
+      - agent: "manager"
+        observations: "No issues found in the logs."
+      - agent: "manager"
+        observations: |
+          ```json
+          {
+              "issues": [],
+              "tickets": []
+          }
+          ```

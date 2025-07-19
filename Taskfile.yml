@@ -1,0 +1,64 @@
+version: '3'
+
+vars:
+  PYTHON_DIRS: "daemons tests"
+
+includes:
+  app:
+    taskfile: Taskfile.app.yaml
+
+tasks:
+  # Setup tasks
+  install:
+    desc: Install all dependencies including dev dependencies
+    cmds:
+      - uv sync --dev
+      - uv pip install -e .
+
+  # Ruff tasks (handles linting, formatting, and import sorting)
+  lint:
+    desc: Run ruff linter on all Python files
+    cmds:
+      - uv run ruff check {{.PYTHON_DIRS}}
+
+  lint-fix:
+    desc: Run ruff linter with auto-fix on all Python files
+    cmds:
+      - uv run ruff check --fix {{.PYTHON_DIRS}}
+
+  format:
+    desc: Format code with ruff formatter (replaces black and isort)
+    cmds:
+      - uv run ruff format {{.PYTHON_DIRS}}
+
+  format-check:
+    desc: Check if code is properly formatted with ruff
+    cmds:
+      - uv run ruff format --check {{.PYTHON_DIRS}}
+
+  # Type checking
+  type-check:
+    desc: Run type checking with ty
+    cmds:
+      - uv run ty check {{.PYTHON_DIRS}}
+
+  # Testing
+  test:
+    desc: Run all tests with pytest
+    cmds:
+      - uv run pytest tests
+
+  # Development helpers
+  clean:
+    desc: Clean up temporary files and caches
+    cmds:
+      - find . -type d -name "__pycache__" -delete
+      - find . -type f -name "*.pyc" -delete
+      - find . -type d -name "*.egg-info" -exec rm -rf {} +
+      - find . -type d -name ".pytest_cache" -exec rm -rf {} +
+      - find . -type d -name ".ruff_cache" -exec rm -rf {} +
+
+  default:
+    desc: Show available tasks
+    cmds:
+      - task --list

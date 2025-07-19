@@ -1,0 +1,7 @@
+version: '3'
+
+tasks:
+  argus-lit:
+    desc: Run Argus in Chainlit
+    cmds:
+      - uv run chainlit run daemons/lit/agrus_lit.py

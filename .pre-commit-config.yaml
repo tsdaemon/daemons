@@ -1,0 +1,40 @@
+repos:
+  # Ruff handles linting, formatting (black), and import sorting (isort) all in one
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.12.3
+    hooks:
+      # Run the linter (includes import sorting)
+      - id: ruff
+        args: [--fix]
+      # Run the formatter (replaces black)
+      - id: ruff-format
+
+  # Type checking with ty
+  -   repo: local
+      hooks:
+        - id: type-check
+          name: Run type checking
+          entry: task type-check
+          language: python
+          types: [python]
+          pass_filenames: false
+
+  - repo: https://github.com/astral-sh/uv-pre-commit
+    # uv version.
+    rev: 0.7.21
+    hooks:
+      # Update the uv lockfile
+      - id: uv-lock
+
+  # Standard pre-commit hooks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-toml
+      - id: check-json
+      - id: check-merge-conflict
+      - id: debug-statements
+      - id: check-docstring-first
