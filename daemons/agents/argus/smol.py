@@ -136,7 +136,7 @@ class Argus:
             name="log_analyzer",
             instructions=LOG_ANALYZER_INSTRUCTIONS,
             description=LOG_ANALYZER_DESCRIPTION,
-            verbosity_level=LogLevel.DEBUG if self.verbose else LogLevel.ERROR,
+            verbosity_level=LogLevel.DEBUG if self.verbose else LogLevel.OFF,
             step_callbacks=self.callbacks,
         )
 
@@ -147,7 +147,7 @@ class Argus:
             name="ticket_formatter",
             instructions=TICKET_FORMATTER_INSTRUCTIONS,
             description=TICKET_FORMATTER_DESCRIPTION,
-            verbosity_level=LogLevel.DEBUG if self.verbose else LogLevel.ERROR,
+            verbosity_level=LogLevel.DEBUG if self.verbose else LogLevel.OFF,
             step_callbacks=self.callbacks,
         )
 
@@ -159,7 +159,7 @@ class Argus:
             step_callbacks=self.callbacks,
             instructions=BACKLOG_GROOMER_INSTRUCTIONS,
             description=BACKLOG_GROOMER_DESCRIPTION,
-            verbosity_level=LogLevel.DEBUG if self.verbose else LogLevel.ERROR,
+            verbosity_level=LogLevel.DEBUG if self.verbose else LogLevel.OFF,
         )
 
         manager_agent = ToolCallingAgent(
@@ -174,7 +174,7 @@ class Argus:
             ],
             step_callbacks=self.callbacks,
             instructions=MANAGER_INSTRUCTIONS,
-            verbosity_level=LogLevel.DEBUG if self.verbose else LogLevel.ERROR,
+            verbosity_level=LogLevel.DEBUG if self.verbose else LogLevel.OFF,
         )
         
         task = f"Analyze the following logs: {logs} for host {hostname}, service {service_name}"

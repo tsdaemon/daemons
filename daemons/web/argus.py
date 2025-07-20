@@ -23,6 +23,6 @@ async def argus(
         verbose=False,
     )
     logger.info(f"Starting Argus with model {config.model}")
-    
     result = agent.run(request.logs, request.host, request.service_name, request.unit)
+    logger.info(f"Argus finished")
     return {"result": result}
