@@ -1,0 +1,16 @@
+---
+name: daemons
+
+services:
+  daemons:
+    container_name: daemons
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - ${DAEMONS_PORT}:8000
+    env_file:
+      - .env
+    environment:
+      DAEMONS_VERBOSE: false
+    restart: always

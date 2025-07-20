@@ -1,7 +1,13 @@
 version: '3'
 
 tasks:
-  argus-lit:
-    desc: Run Argus in Chainlit
+  start:
+    desc: Rebuild the Docker image
     cmds:
-      - uv run chainlit run daemons/lit/agrus_lit.py
+      - docker compose build
+      - docker compose up -d
+
+  stop:
+    desc: Stop the Docker container
+    cmds:
+      - docker compose down

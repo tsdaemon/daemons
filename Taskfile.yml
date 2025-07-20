@@ -42,12 +42,6 @@ tasks:
     cmds:
       - uv run ty check {{.PYTHON_DIRS}}
 
-  # Testing
-  test:
-    desc: Run all tests with pytest
-    cmds:
-      - uv run pytest tests
-
   # Development helpers
   clean:
     desc: Clean up temporary files and caches

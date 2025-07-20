@@ -4,10 +4,12 @@ from smolagents import (
     LiteLLMModel,
     LogLevel,
     ToolCallingAgent,
-    Tool,
 )
+from opentelemetry import trace
 
 from daemons.tools.jira import get_jira_tools
+
+tracer = trace.get_tracer("daemons.agents.argus")
 
 LOG_ANALYZER_INSTRUCTIONS = """
 You are a cloud engineer who is responsible for a stability of a complex system with multiple services and home automations.
@@ -122,7 +124,8 @@ class Argus:
         self.verbose = verbose
         self.callbacks = callbacks
 
-    def run(self, logs: str, hostname: str, service_name: str, unit: str = None):
+    @tracer.start_as_current_span("argus")
+    def run(self, logs: str, hostname: str, service_name: str, unit: str | None = None):
         model = LiteLLMModel(model_id=self.model_id)
         jira_tools = get_jira_tools(service_name, hostname, unit)
 
@@ -133,7 +136,7 @@ class Argus:
             name="log_analyzer",
             instructions=LOG_ANALYZER_INSTRUCTIONS,
             description=LOG_ANALYZER_DESCRIPTION,
-            verbosity_level=LogLevel.DEBUG if self.verbose else LogLevel.INFO,
+            verbosity_level=LogLevel.DEBUG if self.verbose else LogLevel.ERROR,
             step_callbacks=self.callbacks,
         )
 
@@ -144,6 +147,7 @@ class Argus:
             name="ticket_formatter",
             instructions=TICKET_FORMATTER_INSTRUCTIONS,
             description=TICKET_FORMATTER_DESCRIPTION,
+            verbosity_level=LogLevel.DEBUG if self.verbose else LogLevel.ERROR,
             step_callbacks=self.callbacks,
         )
 
@@ -155,6 +159,7 @@ class Argus:
             step_callbacks=self.callbacks,
             instructions=BACKLOG_GROOMER_INSTRUCTIONS,
             description=BACKLOG_GROOMER_DESCRIPTION,
+            verbosity_level=LogLevel.DEBUG if self.verbose else LogLevel.ERROR,
         )
 
         manager_agent = ToolCallingAgent(
@@ -169,7 +174,7 @@ class Argus:
             ],
             step_callbacks=self.callbacks,
             instructions=MANAGER_INSTRUCTIONS,
-            verbosity_level=LogLevel.DEBUG if self.verbose else LogLevel.INFO,
+            verbosity_level=LogLevel.DEBUG if self.verbose else LogLevel.ERROR,
         )
         
         task = f"Analyze the following logs: {logs} for host {hostname}, service {service_name}"
