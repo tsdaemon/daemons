@@ -1,6 +1,5 @@
 
 from fastapi import FastAPI
-from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
 from openinference.instrumentation.smolagents import SmolagentsInstrumentor
 from phoenix.otel import register
 
@@ -20,4 +19,3 @@ app.include_router(argus.router)
 
 register(project_name="daemons")
 SmolagentsInstrumentor().instrument()
-FastAPIInstrumentor.instrument_app(app)

@@ -50,7 +50,7 @@ You are receiving a list of log records which are identified as issues in the sy
 De-duplicate the records if necessary.
 Your goal is to format them as tickets.
 Provide in title a short summary of the issue.
-Provide a description with a summary of the issue.
+Provide a description with a summary of the issue. Description MUST have original log records formatted as markdown.
 
 
 Return your response in the following format:
@@ -77,7 +77,7 @@ You goal is to verify a proposed ticket against the current backlog.
 Use available tools to search if there is an existing ticket for this issue.
 
 If you find a ticket, and its open, return the ticket id.
-If you find a ticket, and its closed, re-open it, and add a comment that the issue is still present.
+If you find a ticket, and its closed, re-open it, and add a comment that the issue is still present with a log example.
 If you find a ticket, and its rejected, do nothing and return the ticket id.
 If you don't find a ticket, create a new one, and return the ticket id.
 
@@ -123,8 +123,7 @@ class Argus:
         self.model_id = model_id
         self.verbose = verbose
         self.callbacks = callbacks
-
-    @tracer.start_as_current_span("argus")
+        
     def run(self, logs: str, hostname: str, service_name: str, unit: str | None = None):
         model = LiteLLMModel(model_id=self.model_id)
         jira_tools = get_jira_tools(service_name, hostname, unit)
