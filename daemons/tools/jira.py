@@ -70,7 +70,7 @@ class JiraTicketCreateTool(JiraTool):
     def forward(self, title: str, description: str):
         issue = self.jira.create_issue(
             project="THES",
-            summary=f"[{self.service_name} {self.hostname}{f' / {self.unit}' if self.unit else ''}] {title}",
+            summary=f"[{self.hostname}: {self.service_name} {f' / {self.unit}' if self.unit else ''}] {title}",
             description=description,
             issuetype={"name": "Bug"},
         )

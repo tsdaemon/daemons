@@ -89,7 +89,7 @@ Return your response in the following format:
 """
 
 BACKLOG_GROOMER_DESCRIPTION = """
-This agent with access to the backlog which can search and update tickets.
+This agent with access to the backlog which can search and update tickets. Make sure to pass him the detailed description of the issue, including the original log records.
 """
 
 MANAGER_INSTRUCTIONS = """
